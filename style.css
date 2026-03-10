@@ -44,6 +44,7 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     cursor: none;
+    transition: background .3s ease, color .3s ease;
 }
 
 /* ── CURSOR ── */
@@ -712,8 +713,8 @@ section {
     transition: transform .4s ease;
 }
 
-.hobby-card:hover {
-    border-color: rgba(255, 107, 53, .3);
+#hobbies .hobby-card:hover {
+    border-color: var(--accent) !important;
     transform: translateY(-5px);
     box-shadow: 0 10px 30px -15px rgba(0, 0, 0, .3);
 }

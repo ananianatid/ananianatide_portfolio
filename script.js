@@ -4,10 +4,16 @@ document.addEventListener('mousemove', e => {
   cursor.style.left = e.clientX + 'px';
   cursor.style.top = e.clientY + 'px';
 });
-document.querySelectorAll('a, button, .project-card, .stat-card, .skill-group, .hobby-card').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-});
+const updateCursorHover = () => {
+  document.querySelectorAll('a, button, .project-card, .stat-card, .skill-group, .hobby-card').forEach(el => {
+    if (!el.dataset.hoverBound) {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+      el.dataset.hoverBound = "true";
+    }
+  });
+};
+updateCursorHover();
 
 // nav scroll
 window.addEventListener('scroll', () => {
@@ -34,13 +40,19 @@ const applyTheme = (theme) => {
   html.setAttribute('data-theme', theme);
   toggleBtn.textContent = theme === 'light' ? '☀️' : '🌙';
   localStorage.setItem('theme', theme);
+  // Force a re-render/reflow for certain elements if needed
+  document.body.style.display = 'none';
+  document.body.offsetHeight; // no-op to trigger reflow
+  document.body.style.display = '';
 };
 
 // Load saved preference, fallback to dark
-applyTheme(localStorage.getItem('theme') || 'dark');
+const savedTheme = localStorage.getItem('theme') || 'dark';
+applyTheme(savedTheme);
 
 toggleBtn.addEventListener('click', () => {
   const current = html.getAttribute('data-theme');
-  applyTheme(current === 'light' ? 'dark' : 'light');
+  const target = current === 'light' ? 'dark' : 'light';
+  applyTheme(target);
 });
 
