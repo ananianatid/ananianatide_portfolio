@@ -25,3 +25,22 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.12 });
 reveals.forEach(el => observer.observe(el));
+
+// ── THEME TOGGLE ──
+const toggleBtn = document.getElementById('theme-toggle');
+const html = document.documentElement;
+
+const applyTheme = (theme) => {
+  html.setAttribute('data-theme', theme);
+  toggleBtn.textContent = theme === 'light' ? '☀️' : '🌙';
+  localStorage.setItem('theme', theme);
+};
+
+// Load saved preference, fallback to dark
+applyTheme(localStorage.getItem('theme') || 'dark');
+
+toggleBtn.addEventListener('click', () => {
+  const current = html.getAttribute('data-theme');
+  applyTheme(current === 'light' ? 'dark' : 'light');
+});
+
